@@ -1,0 +1,41 @@
+<div class="bg display">
+  <div class="container">
+    <div>
+      <label class="display Header">ADMTC V2</label>
+      <label class="display Label"
+        >Welcome to the Platform of Academic Resources</label
+      >
+      <form class="Form" [formGroup]="createForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+
+          <mat-icon matSuffix>account_circle</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
+      <label class="Label">Forgot Password?</label>
+    </div>
+
+    <div class="display">
+      <button mat-raised-button class="button">Login</button>
+    </div>
+  </div>
+</div>
