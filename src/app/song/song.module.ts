@@ -4,6 +4,7 @@ import { SongTableListsComponent } from './song-table-lists/song-table-lists.com
 import { AddSongDialogComponent } from './add-song-dialog/add-song-dialog.component';
 import { SongDetailPageComponent } from './song-detail-page/song-detail-page.component';
 import { SongRoutingModule } from './song-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,6 @@ import { SongRoutingModule } from './song-routing.module';
     AddSongDialogComponent,
     SongDetailPageComponent,
   ],
-  imports: [CommonModule, SongRoutingModule],
+  imports: [CommonModule, SongRoutingModule, SharedModule],
 })
 export class SongModule {}

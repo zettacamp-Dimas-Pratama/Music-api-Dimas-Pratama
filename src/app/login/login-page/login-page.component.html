@@ -5,16 +5,16 @@
       <label class="display Label"
         >Welcome to the Platform of Academic Resources</label
       >
-      <form class="Form" [formGroup]="createForm">
-        <mat-form-field appearance="fill">
-          <mat-label>Email</mat-label>
+      <!-- <img src="../../../assets/uk.png" class="foto" /> -->
+      <form class="Form" [formGroup]="loginForm">
+        <mat-form-field appearance="legacy">
+          <mat-label style="color: white">Email</mat-label>
           <input matInput formControlName="email" />
-
           <mat-icon matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Password</mat-label>
+        <mat-form-field appearance="legacy">
+          <mat-label style="color: white">Password</mat-label>
           <input
             matInput
             [type]="hide ? 'password' : 'text'"
@@ -35,7 +35,7 @@
     </div>
 
     <div class="display">
-      <button mat-raised-button class="button">Login</button>
+      <button mat-raised-button class="button" (click)="login()">Login</button>
     </div>
   </div>
 </div>

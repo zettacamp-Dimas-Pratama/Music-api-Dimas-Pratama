@@ -1,1 +1,35 @@
-<p>add-song-dialog works!</p>
+<h2>{{ data.Title }} Form</h2>
+<mat-dialog-content class="mat-typography">
+  <form class="Form" [formGroup]="CreateForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Genre</mat-label>
+      <input matInput formControlName="genre" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Duration</mat-label>
+      <input matInput formControlName="duration" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Crreated By</mat-label>
+      <input matInput formControlName="createdBy" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-raised-button
+    mat-dialog-close
+    color="primary"
+    class="button"
+    (click)="AddData()"
+  >
+    {{ data.Title }}
+  </button>
+  <button mat-raised-button mat-dialog-close color="warn" class="button">
+    Cancel
+  </button>
+</mat-dialog-actions>

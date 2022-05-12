@@ -1,1 +1,22 @@
-<p>song-detail-page works!</p>
+<div class="bg display">
+  <div class="container display">
+    <div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="button"
+        (click)="Kembali()"
+      >
+        kembali
+      </button>
+      <br />
+      <label>Name: {{ dataDetail.name }}</label>
+      <br />
+      <label>Genre: {{ dataDetail.genre }}</label>
+      <br />
+      <label>Duration: {{ dataDetail.duration }}</label>
+      <br />
+      <label>Created By: {{ dataDetail.createdBy }}</label>
+    </div>
+  </div>
+</div>
