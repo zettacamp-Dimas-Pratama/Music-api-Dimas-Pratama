@@ -20,12 +20,14 @@
     "@angular/platform-browser": "~13.2.0",
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
-    "apollo-angular": "^3.0.1",
-    "rxjs": "~7.5.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.11.4",
     "@apollo/client": "^3.0.0",
-    "graphql": "^y"
+    "apollo-angular": "^3.0.1",
+    "graphql": "^15.8.0",
+    "rxjs": "~7.5.0",
+    "subsink": "^1.0.2",
+    "sweetalert2": "^11.4.14",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.2",

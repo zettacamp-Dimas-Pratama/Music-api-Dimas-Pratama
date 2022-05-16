@@ -1,6 +1,14 @@
 <div class="bg display">
-  <div class="container display">
-    <div>
+  <div class="container">
+    <div class="header">
+      <label>Name: {{ dataDetail.name }}</label>
+    </div>
+    <div style="margin-top: 20px">
+      <label>Genre: {{ dataDetail.genre }}</label>
+      <br />
+      <label>Duration: {{ dataDetail.duration }}</label>
+      <br />
+      <!-- <label>Created By: {{ dataDetail.createdBy }}</label> -->
       <button
         mat-raised-button
         color="primary"
@@ -9,14 +17,6 @@
       >
         kembali
       </button>
-      <br />
-      <label>Name: {{ dataDetail.name }}</label>
-      <br />
-      <label>Genre: {{ dataDetail.genre }}</label>
-      <br />
-      <label>Duration: {{ dataDetail.duration }}</label>
-      <br />
-      <label>Created By: {{ dataDetail.createdBy }}</label>
     </div>
   </div>
 </div>

@@ -1,30 +1,5 @@
-// import {NgModule} from '@angular/core';
-// import {ApolloModule, APOLLO_OPTIONS} from 'apollo-angular';
-// import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
-// import {HttpLink} from 'apollo-angular/http';
-
-// const uri = 'y'; // <-- add the URL of the GraphQL server here
-// export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
-//   return {
-//     link: httpLink.create({uri}),
-//     cache: new InMemoryCache(),
-//   };
-// }
-
-// @NgModule({
-//   exports: [ApolloModule],
-//   providers: [
-//     {
-//       provide: APOLLO_OPTIONS,
-//       useFactory: createApollo,
-//       deps: [HttpLink],
-//     },
-//   ],
-// })
-// export class GraphQLModule {}
-
 import { NgModule } from '@angular/core';
-import { APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import {
   ApolloClientOptions,
   ApolloLink,
@@ -38,12 +13,20 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const http = httpLink.create({ uri: uri });
   const authLink = new ApolloLink((operation, forward) => {
     // Get the authentication token from local storage if it exists
-    const token = localStorage.getItem(environment.tokenKey);
+    // const token = localStorage.getItem(environment.tokenKey);
+    let token = localStorage.getItem(environment.tokenKey);
+    if (token) {
+      token = token.replace(/^"(.*)"$/, '$1'); // Remove quotes from token start/end. This is a temp fix?!
+    }
 
     // Use the setContext method to set the HTTP headers.
+
     operation.setContext({
       headers: {
-        Authorization: token ? `Bearer ${token}` : '',
+        Authorization: token ? `${token}` : '',
+
+        // Authorization:
+        //   'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhbWFAMTI0LmNvbSIsInVzZXJfaWQiOiI2MjZhMjhhYjVlMGFjMmI2NmFiYzZmZTgiLCJpYXQiOjE2NTI0MjM0NjR9.8ZeEE0zJEr_O4u4XdHQh4gBltDGTukY7eDLzkhisbOo',
       },
     });
 
@@ -58,6 +41,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
 }
 
 @NgModule({
+  exports: [ApolloModule],
   providers: [
     {
       provide: APOLLO_OPTIONS,

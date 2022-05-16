@@ -3,11 +3,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { LoginService } from '../login.service';
-
-interface Payload {
-  email: string;
-  password: string;
-}
+import { SubSink } from 'subsink';
+// import { SubSink } from 'subsink';
+// interface Payload {
+//   email: string;
+//   hashed_password: string;
+// }
 
 @Component({
   selector: 'app-login-page',
@@ -15,6 +16,7 @@ interface Payload {
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent implements OnInit {
+  private subs = new SubSink();
   hide = true;
   loginForm!: FormGroup;
   FakeData: any;
@@ -37,16 +39,19 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    // const payload: Payload = this.loginForm.value;
-    // this.authService
-    //   .loginUser(payload.email, payload.password)
-    //   .subscribe((resp) => {
-    //     console.log(resp);
-    //     if (resp) {
-    //       // this.router.navigate(['/home']);
-    //     }
-    //   });
-    this.router.navigate(['song']);
+    console.log('data form', this.loginForm.value);
+    const payload = this.loginForm.value;
+
+    this.subs.sink = this.authService
+      .loginUser(payload.email, payload.password)
+      .subscribe((resp) => {
+        console.log('responee', resp);
+        if (resp) {
+          this.router.navigate(['song']);
+        }
+      });
+
+    // this.router.navigate(['song']);
   }
   GetData() {
     this.loginService.GetFakeAPI().subscribe((response: any) => {

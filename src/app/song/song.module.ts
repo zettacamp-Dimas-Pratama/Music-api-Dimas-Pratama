@@ -5,6 +5,7 @@ import { AddSongDialogComponent } from './add-song-dialog/add-song-dialog.compon
 import { SongDetailPageComponent } from './song-detail-page/song-detail-page.component';
 import { SongRoutingModule } from './song-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { GraphQLModule } from '../graphql.module';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,6 @@ import { SharedModule } from '../shared/shared.module';
     AddSongDialogComponent,
     SongDetailPageComponent,
   ],
-  imports: [CommonModule, SongRoutingModule, SharedModule],
+  imports: [CommonModule, SongRoutingModule, SharedModule, GraphQLModule],
 })
 export class SongModule {}

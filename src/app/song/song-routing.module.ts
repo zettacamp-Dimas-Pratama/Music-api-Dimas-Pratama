@@ -5,7 +5,11 @@ import { SongTableListsComponent } from './song-table-lists/song-table-lists.com
 
 const routes: Routes = [
   // Module is lazy loaded, see app-routing.module.ts
-  { path: '', component: SongTableListsComponent },
+  {
+    path: '',
+    component: SongTableListsComponent,
+    runGuardsAndResolvers: 'always',
+  },
   { path: 'detail/:id', component: SongDetailPageComponent },
 ];
 

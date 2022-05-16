@@ -14,10 +14,11 @@ table {
   width: 100%;
   border: 1px solid;
   background-color: #353535;
+  border: 5px solid #607d8b;
 }
 
 .TableMaterial {
-  height: 400px;
+  height: 420px;
 
   max-width: 100%;
   overflow: auto;
@@ -45,5 +46,40 @@ table {
   color: white;
 }
 .mat-column {
-  border: 1px solid;
+  border: 1px solid black;
+}
+
+.mat-column-name {
+  border-right: 1px solid black;
+  color: white;
+  align-self: stretch;
+  text-align: center;
+}
+.mat-column-genre {
+  border-right: 1px solid black;
+  color: white;
+  align-self: stretch;
+  text-align: center;
+}
+.mat-column-duration {
+  border-right: 1px solid black;
+  color: white;
+  align-self: stretch;
+  text-align: center;
+}
+.mat-column-created {
+  border-right: 1px solid black;
+  color: white;
+  align-self: stretch;
+  text-align: center;
+}
+.mat-column-action {
+  color: white;
+  align-self: stretch;
+  text-align: center;
+}
+.paginator-control {
+  border: 2px solid #607d8b;
+  background-color: #353535;
+  color: white;
 }

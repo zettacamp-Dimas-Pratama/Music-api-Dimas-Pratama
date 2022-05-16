@@ -2,93 +2,144 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { map, catchError } from 'rxjs/operators';
-// import { Apollo, gql } from 'apollo-angular';
+import { Apollo, gql } from 'apollo-angular';
+
+export interface Page {
+  limit: number;
+  page: number;
+}
+export interface FilterName {
+  name: string;
+}
+export interface Song {
+  name: string;
+  _id: string;
+  genre: string;
+  duration: any;
+  created_by: any;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class SongService {
-  SongList = [
-    {
-      id: 1,
-      name: 'Biarkan Cinta Berlalu',
-      genre: '1',
-      duration: '1',
-      createdBy: 'Nike Ardila',
-    },
-    {
-      id: 2,
-      name: 'anadai kau datang',
-      genre: '1',
-      duration: '1',
-      createdBy: 'KoesPlus',
-    },
-    {
-      id: 3,
-      name: 'Kala Cinta Menggoda',
-      genre: '1',
-      duration: '1',
-      createdBy: 'Chrisye',
-    },
-    {
-      id: 4,
-      name: 'Tenda Biru',
-      genre: '1',
-      duration: '1',
-      createdBy: 'Desy Ratnasari',
-    },
-    {
-      id: 5,
-      name: 'Tenda Biru',
-      genre: '1',
-      duration: '1',
-      createdBy: 'Desy Ratnasari',
-    },
-    {
-      id: 6,
-      name: 'Tenda Biru',
-      genre: '1',
-      duration: '1',
-      createdBy: 'Desy Ratnasari',
-    },
-    {
-      id: 7,
-      name: 'Tenda Biru',
-      genre: '1',
-      duration: '1',
-      createdBy: 'Desy Ratnasari',
-    },
-  ];
-  constructor() {}
-  directories: BehaviorSubject<any> = new BehaviorSubject<any[]>(this.SongList);
-  getEditid(id: any) {
-    console.log('id nya', id);
-    const found = this.SongList.find((element: any) => element.id == id);
-    console.log('found', found);
-    return found;
-  }
-  tambahCard(data: any) {
-    console.log('panjang data');
-    data.id = this.SongList.length + 1;
-    console.log('data di srvice', data);
-    // this.SongList.push(data);
-    // console.log('data di card sekarang', this.SongList);
+  constructor(private apollo: Apollo) {}
 
-    const tmp = this.directories.getValue();
-
-    tmp.push(data);
-    console.log('data tmp', tmp);
-    this.directories.next(tmp);
+  GetDataSong2(page: Page): Observable<any> {
+    console.log('pages', page);
+    return this.apollo.query({
+      query: gql`
+        query ($page: InputSongPage) {
+          getAllSong(pagination: $page) {
+            name
+            _id
+            genre
+            duration
+            created_by {
+              name
+              email
+              _id
+              user_type
+            }
+          }
+        }
+      `,
+      variables: {
+        page,
+      },
+      fetchPolicy: 'network-only',
+    });
   }
-  // GetDataSong(): Observable<any> {
-  //   return this.apollo.query({
-  //     query: gql`
-  //       query {
-  //         getAllUser {
-  //           name
-  //         }
-  //       }
-  //     `,
-  //     fetchPolicy: 'network-only',
-  //   });
-  // }
+  FilterDataSongName(filter: FilterName): Observable<any> {
+    console.log('pages', filter);
+    return this.apollo.query({
+      query: gql`
+        query ($filter: InputSongFilter) {
+          getAllSong(fillter: $filter) {
+            name
+          }
+        }
+      `,
+      variables: {
+        filter,
+      },
+      fetchPolicy: 'network-only',
+    });
+  }
+  GetDataSongid(id: any): Observable<any> {
+    console.log('dataid', id);
+    return this.apollo.query({
+      query: gql`
+        query {
+          getSongById (id: "${id}"){
+            name
+            genre
+            duration
+          }
+        }
+      `,
+      fetchPolicy: 'network-only',
+    });
+  }
+  DeleteDataSongid(id: any): Observable<any> {
+    console.log('dataid', id);
+    return this.apollo.mutate({
+      mutation: gql`
+        mutation {
+          removeSong (id: "${id}") {
+            name
+            genre
+            duration
+          }
+        }
+      `,
+      fetchPolicy: 'network-only',
+    });
+  }
+  CreateSong(Payload: any): Observable<any> {
+    const payload = {
+      name: Payload.name,
+
+      genre: Payload.genre,
+      duration: parseInt(Payload.duration),
+    };
+    console.log('data payload', payload);
+    return this.apollo.mutate({
+      mutation: gql`
+        mutation createSong($payload: InputSong) {
+          createSong(input_song: $payload) {
+            name
+            genre
+            duration
+          }
+        }
+      `,
+      variables: {
+        payload,
+      },
+    });
+  }
+  UpdateSong(id: any, Payload: any): Observable<any> {
+    const payload = {
+      name: Payload.name,
+
+      genre: Payload.genre,
+      duration: parseInt(Payload.duration),
+    };
+    console.log('data payload', payload);
+    console.log('data id siallan2', id);
+    return this.apollo.mutate({
+      mutation: gql`
+        mutation updateSong($payload: InputSong) {
+          updateSong(id: "${id}",input_song: $payload) {
+            name
+            genre
+            duration
+          }
+        }
+      `,
+      variables: {
+        payload,
+      },
+    });
+  }
 }

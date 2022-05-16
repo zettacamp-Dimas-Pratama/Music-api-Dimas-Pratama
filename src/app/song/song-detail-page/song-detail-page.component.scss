@@ -3,13 +3,18 @@
   background-color: #353535;
 }
 .container {
-  padding: 20px;
   width: 50%;
   height: 50%;
-  // background-color: #212121;
-  // color: white;
-  background-color: white;
+  padding: 20px;
+  background-color: #607d8b;
+  border-radius: 20px;
   label {
     font-size: 30px;
+  }
+  .header {
+    color: white;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
   }
 }

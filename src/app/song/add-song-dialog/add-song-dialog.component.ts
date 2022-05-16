@@ -1,6 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SubSink } from 'subsink';
+import { SongTableListsComponent } from '../song-table-lists/song-table-lists.component';
 import { SongService } from '../song.service';
 
 @Component({
@@ -10,6 +20,10 @@ import { SongService } from '../song.service';
 })
 export class AddSongDialogComponent implements OnInit {
   CreateForm!: FormGroup;
+  DataKirim: any;
+
+  DataSong: any;
+  private subs = new SubSink();
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private songService: SongService
@@ -17,6 +31,7 @@ export class AddSongDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.FormGroup();
+
     console.log('data kiriman', this.data);
     if (this.data.Title == 'Edit') {
       this.DataEdit();
@@ -32,17 +47,35 @@ export class AddSongDialogComponent implements OnInit {
     });
   }
   DataEdit() {
+    console.log('data isis', this.data);
     this.CreateForm.setValue({
       name: this.data.dataIsi.name,
       genre: this.data.dataIsi.genre,
       duration: this.data.dataIsi.duration,
-      createdBy: this.data.dataIsi.createdBy,
+      createdBy: this.data.dataIsi.created_by.name,
     });
   }
 
-  AddData() {
+  MDataKirim() {
     if (this.data.Title == 'Add') {
-      this.songService.tambahCard(this.CreateForm.value);
+      this.DataKirim = {
+        title: 'add',
+        data: this.CreateForm.value,
+      };
+    } else if (this.data.Title == 'Edit') {
+      this.DataKirim = {
+        title: 'Edit',
+        data: this.CreateForm.value,
+      };
+    } else {
+      ('yah gagal');
     }
+  }
+  AddData() {
+    this.subs.sink = this.songService
+      .CreateSong(this.CreateForm.value)
+      .subscribe((response: any) => {
+        console.log('res graphql', response);
+      });
   }
 }
