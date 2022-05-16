@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { LoginService } from '../login.service';
 import { SubSink } from 'subsink';
+import { NgxSpinnerService } from 'ngx-spinner';
 // import { SubSink } from 'subsink';
 // interface Payload {
 //   email: string;
@@ -23,7 +24,8 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private loginService: LoginService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -39,19 +41,24 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    console.log('data form', this.loginForm.value);
-    const payload = this.loginForm.value;
+    // this.spinner.show();
+    // console.log('data form', this.loginForm.value);
+    // const payload = this.loginForm.value;
 
-    this.subs.sink = this.authService
-      .loginUser(payload.email, payload.password)
-      .subscribe((resp) => {
-        console.log('responee', resp);
-        if (resp) {
-          this.router.navigate(['song']);
-        }
-      });
+    // this.subs.sink = this.authService
+    //   .loginUser(payload.email, payload.password)
+    //   .subscribe((resp) => {
+    //     console.log('responee', resp);
+    //     if (resp) {
+    //       this.router.navigate(['song']);
+    //     }
+    //   });
+    // setTimeout(() => {
+    //   /** spinner ends after 5 seconds */
+    //   this.spinner.hide();
+    // }, 5000);
 
-    // this.router.navigate(['song']);
+    this.router.navigate(['song']);
   }
   GetData() {
     this.loginService.GetFakeAPI().subscribe((response: any) => {

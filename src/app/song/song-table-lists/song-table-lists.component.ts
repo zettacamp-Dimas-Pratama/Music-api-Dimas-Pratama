@@ -9,6 +9,8 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatPaginator } from '@angular/material/paginator';
 import { startWith, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+import { NgxSpinnerService } from 'ngx-spinner';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-song-table-lists',
@@ -44,7 +46,8 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
     private songService: SongService,
     public dialog: MatDialog,
     private router: Router,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private spinner: NgxSpinnerService
   ) {}
   ngAfterViewInit(): void {
     this.subs.sink = this.paginator.page
@@ -72,7 +75,7 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Dialog result', result);
       if (this.title2 == 'add') {
-        console.log('ini add');
+        console.log('ini add', result);
         this.AddData(result);
       }
     });
@@ -110,8 +113,9 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
   }
 
   GetDataSong() {
+    this.spinner.show();
     const pagination = {
-      limit: this.paginator.pageSize ? this.paginator.pageSize : 4,
+      limit: this.paginator.pageSize ? this.paginator.pageSize : 10,
       page: this.paginator.pageIndex ? this.paginator.pageIndex : 0,
     };
 
@@ -122,34 +126,85 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
 
         this.paginator.length = data.data.getAllSong[0].count_document;
         this.dataCount = data.data.getAllSong[0].count_document;
-        console.log('data count = ', data.data.getAllSong[0]);
+
+        this.spinner.hide();
       });
   }
   AddData(data: any) {
-    this.subs.sink = this.songService
-      .CreateSong(data)
-      .subscribe((response: any) => {
-        console.log('res graphql', response);
-        this.GetDataSong();
-      });
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        if (data.status == 'VALID') {
+          console.log('hasil input', data.value);
+          this.subs.sink = this.songService
+            .CreateSong(data.value)
+            .subscribe((response: any) => {
+              console.log('res graphql', response);
+              this.GetDataSong();
+            });
+          Swal.fire('Saved!', 'Add Succsess', 'success');
+        } else {
+          Swal.fire('please refill again', '', 'info');
+        }
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info');
+      }
+    });
   }
   UpdateData(id: any, data: any) {
     console.log('id siallan', id._id);
-    this.subs.sink = this.songService
-      .UpdateSong(id._id, data)
-      .subscribe((response: any) => {
-        console.log('res graphql', response);
-        this.GetDataSong();
-      });
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        if (data.status == 'VALID') {
+          console.log('hasil input', data.value);
+          this.subs.sink = this.songService
+            .UpdateSong(id._id, data.value)
+            .subscribe((response: any) => {
+              console.log('res graphql', response);
+              this.GetDataSong();
+              Swal.fire('Saved!', 'Edit Succsess', 'success');
+            });
+        } else {
+          Swal.fire('please refill again', '', 'error');
+        }
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'error');
+      }
+    });
   }
   DeleteSong(id: any) {
     console.log('id nya');
-    this.subs.sink = this.songService
-      .DeleteDataSongid(id)
-      .subscribe((response: any) => {
-        console.log('res detail', response);
-        this.GetDataSong();
-      });
+    Swal.fire({
+      title: 'Do you want to Delete Data?',
+
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.subs.sink = this.songService
+          .DeleteDataSongid(id)
+          .subscribe((response: any) => {
+            console.log('res detail', response);
+            this.GetDataSong();
+            Swal.fire('Saved!', 'Delete Succsess', 'success');
+          });
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'error');
+      }
+    });
   }
   FilterName(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -160,5 +215,11 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
       .subscribe((response: any) => {
         console.log('respone filter', response);
       });
+  }
+  showSpinner() {
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 3000);
   }
 }

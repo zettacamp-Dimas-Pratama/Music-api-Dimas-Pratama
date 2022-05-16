@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SongTableListsComponent } from './song-table-lists/song-table-lists.component';
 import { AddSongDialogComponent } from './add-song-dialog/add-song-dialog.component';
@@ -14,5 +14,6 @@ import { GraphQLModule } from '../graphql.module';
     SongDetailPageComponent,
   ],
   imports: [CommonModule, SongRoutingModule, SharedModule, GraphQLModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SongModule {}
