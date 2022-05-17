@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { SongService, Song } from '../song.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddSongDialogComponent } from '../add-song-dialog/add-song-dialog.component';
@@ -11,6 +17,7 @@ import { startWith, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Swal from 'sweetalert2';
+import { MatSort, Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-song-table-lists',
@@ -19,10 +26,13 @@ import Swal from 'sweetalert2';
 })
 export class SongTableListsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   dataCount = 0;
   filterName: any;
   filterGenre: any;
   filterCreatedBy: any;
+
   FakeData: any;
   DataSong: any;
   dataSource = new MatTableDataSource<any>([]);
@@ -52,6 +62,7 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
     private spinner: NgxSpinnerService
   ) {}
   ngAfterViewInit(): void {
+    console.log('sort nya?', this.sort);
     this.subs.sink = this.paginator.page
       .pipe(
         startWith(null),
@@ -63,6 +74,7 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    console.log('sort nya?', this.sort);
     this.GetDataSong();
   }
 
@@ -145,8 +157,14 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
       if (result.isConfirmed) {
         if (data.status == 'VALID') {
           console.log('hasil input', data.value);
+          const payload = {
+            name: data.value.name,
+
+            genre: data.value.genre,
+            duration: parseInt(data.value.duration),
+          };
           this.subs.sink = this.songService
-            .CreateSong(data.value)
+            .CreateSong(payload)
             .subscribe((response: any) => {
               console.log('res graphql', response);
               this.GetDataSong();
@@ -172,8 +190,14 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
       if (result.isConfirmed) {
         if (data.status == 'VALID') {
           console.log('hasil input', data.value);
+          const payload = {
+            name: data.value.name,
+
+            genre: data.value.genre,
+            duration: parseInt(data.value.duration),
+          };
           this.subs.sink = this.songService
-            .UpdateSong(id._id, data.value)
+            .UpdateSong(id._id, payload)
             .subscribe((response: any) => {
               console.log('res graphql', response);
               this.GetDataSong();
@@ -254,5 +278,50 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
 
   LogOut() {
     this.router.navigate(['login']);
+  }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.active == 'name') {
+      console.log('sortname');
+
+      this.SortByName(sortState.direction);
+    } else if (sortState.active == 'genre') {
+      console.log('sortgenre');
+      this.SortByGenre(sortState.direction);
+    } else if (sortState.active == 'created') {
+      console.log('sortcreated');
+      this.SortByCreated(sortState.direction);
+    } else {
+      console.log('yah gagal');
+    }
+  }
+
+  SortByName(data: any) {
+    console.log('data soor', data);
+    this.subs.sink = this.songService
+      .SortDataSongName(data)
+      .subscribe((response: any) => {
+        console.log('respone sort', response);
+        this.dataSource.data = response.data.getAllSong;
+        // this.dataSource.sort = response.data.getAllSong;
+      });
+  }
+  SortByGenre(data: any) {
+    console.log('data soor', data);
+    this.subs.sink = this.songService
+      .SortDataSongName(data)
+      .subscribe((response: any) => {
+        console.log('respone sort', response);
+        this.dataSource.data = response.data.getAllSong;
+      });
+  }
+  SortByCreated(data: any) {
+    console.log('data soor', data);
+    this.subs.sink = this.songService
+      .SortDataSongName(data)
+      .subscribe((response: any) => {
+        console.log('respone sort', response);
+        this.dataSource.data = response.data.getAllSong;
+      });
   }
 }

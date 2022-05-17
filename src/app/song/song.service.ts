@@ -72,6 +72,66 @@ export class SongService {
       fetchPolicy: 'network-only',
     });
   }
+  SortDataSongName(Sort: any): Observable<any> {
+    console.log('pages', Sort);
+
+    return this.apollo.query({
+      query: gql`
+        query  {
+          getAllSong(sorting:{name:${Sort}}) {
+            name
+            genre
+            duration
+            created_by {
+              name
+            }
+          }
+        }
+      `,
+
+      fetchPolicy: 'network-only',
+    });
+  }
+  SortDataSongGenre(Sort: any): Observable<any> {
+    console.log('pages', Sort);
+
+    return this.apollo.query({
+      query: gql`
+        query  {
+          getAllSong(genre:{name:${Sort}}) {
+            name
+            genre
+            duration
+            created_by {
+              name
+            }
+          }
+        }
+      `,
+
+      fetchPolicy: 'network-only',
+    });
+  }
+  SortDataSongCreated(Sort: any): Observable<any> {
+    console.log('pages', Sort);
+
+    return this.apollo.query({
+      query: gql`
+        query  {
+          getAllSong(created_by:{name:${Sort}}) {
+            name
+            genre
+            duration
+            created_by {
+              name
+            }
+          }
+        }
+      `,
+
+      fetchPolicy: 'network-only',
+    });
+  }
   GetDataSongid(id: any): Observable<any> {
     console.log('dataid', id);
     return this.apollo.query({
@@ -103,13 +163,7 @@ export class SongService {
     });
   }
   CreateSong(Payload: any): Observable<any> {
-    const payload = {
-      name: Payload.name,
-
-      genre: Payload.genre,
-      duration: parseInt(Payload.duration),
-    };
-    console.log('data payload', payload);
+    console.log('data payload', Payload);
     return this.apollo.mutate({
       mutation: gql`
         mutation createSong($payload: InputSong) {
@@ -121,19 +175,11 @@ export class SongService {
         }
       `,
       variables: {
-        payload,
+        Payload,
       },
     });
   }
   UpdateSong(id: any, Payload: any): Observable<any> {
-    const payload = {
-      name: Payload.name,
-
-      genre: Payload.genre,
-      duration: parseInt(Payload.duration),
-    };
-    console.log('data payload', payload);
-    console.log('data id siallan2', id);
     return this.apollo.mutate({
       mutation: gql`
         mutation updateSong($payload: InputSong) {
@@ -145,7 +191,7 @@ export class SongService {
         }
       `,
       variables: {
-        payload,
+        Payload,
       },
     });
   }
