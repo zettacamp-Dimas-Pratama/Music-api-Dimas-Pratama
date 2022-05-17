@@ -34,6 +34,7 @@ export class SongService {
             _id
             genre
             duration
+            count_document
             created_by {
               name
               email
@@ -49,13 +50,19 @@ export class SongService {
       fetchPolicy: 'network-only',
     });
   }
-  FilterDataSongName(filter: FilterName): Observable<any> {
+  FilterDataSong(filter: any): Observable<any> {
     console.log('pages', filter);
+
     return this.apollo.query({
       query: gql`
         query ($filter: InputSongFilter) {
           getAllSong(fillter: $filter) {
             name
+            genre
+            duration
+            created_by {
+              name
+            }
           }
         }
       `,

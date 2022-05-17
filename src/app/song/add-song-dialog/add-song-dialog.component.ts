@@ -43,7 +43,6 @@ export class AddSongDialogComponent implements OnInit {
       name: new FormControl(null, Validators.required),
       genre: new FormControl(null, Validators.required),
       duration: new FormControl(null, Validators.required),
-      createdBy: new FormControl(null, Validators.required),
     });
   }
   DataEdit() {
@@ -52,7 +51,6 @@ export class AddSongDialogComponent implements OnInit {
       name: this.data.dataIsi.name,
       genre: this.data.dataIsi.genre,
       duration: this.data.dataIsi.duration,
-      createdBy: this.data.dataIsi.created_by.name,
     });
   }
 

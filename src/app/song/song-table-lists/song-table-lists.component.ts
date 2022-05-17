@@ -21,10 +21,12 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   dataCount = 0;
   filterName: any;
+  filterGenre: any;
+  filterCreatedBy: any;
   FakeData: any;
   DataSong: any;
   dataSource = new MatTableDataSource<any>([]);
-  pageSizeOptions: number[] = [2, 5, 10, 25, 50, 100];
+  pageSizeOptions: number[] = [5, 6, 8, 10];
   title2: any;
   private subs = new SubSink();
 
@@ -122,6 +124,7 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
     this.subs.sink = this.songService
       .GetDataSong2(pagination)
       .subscribe((data) => {
+        console.log('data page', data.data.getAllSong[0].count_document);
         this.dataSource.data = data.data.getAllSong;
 
         this.paginator.length = data.data.getAllSong[0].count_document;
@@ -210,16 +213,46 @@ export class SongTableListsComponent implements OnInit, AfterViewInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.filterName = filterValue.trim().toLowerCase();
     // this.FakeData.filter = filterValue.trim().toLowerCase();
+    const payload = {
+      name: this.filterName,
+    };
     this.subs.sink = this.songService
-      .FilterDataSongName(this.filterName)
+      .FilterDataSong(payload)
       .subscribe((response: any) => {
         console.log('respone filter', response);
+        this.dataSource.data = response.data.getAllSong;
       });
   }
-  showSpinner() {
-    this.spinner.show();
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 3000);
+  FilterGenre(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filterGenre = filterValue.trim().toLowerCase();
+    // this.FakeData.filter = filterValue.trim().toLowerCase();
+    const payload = {
+      genre: this.filterGenre,
+    };
+    this.subs.sink = this.songService
+      .FilterDataSong(payload)
+      .subscribe((response: any) => {
+        console.log('respone filter', response);
+        this.dataSource.data = response.data.getAllSong;
+      });
+  }
+  FilterCreatedBy(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filterCreatedBy = filterValue.trim().toLowerCase();
+    // this.FakeData.filter = filterValue.trim().toLowerCase();
+    const payload = {
+      creator_name: this.filterCreatedBy,
+    };
+    this.subs.sink = this.songService
+      .FilterDataSong(payload)
+      .subscribe((response: any) => {
+        console.log('respone filter', response);
+        this.dataSource.data = response.data.getAllSong;
+      });
+  }
+
+  LogOut() {
+    this.router.navigate(['login']);
   }
 }
