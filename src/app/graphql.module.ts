@@ -26,7 +26,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
         Authorization: token ? `${token}` : '',
 
         // Authorization:
-        //   'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhbWFAMTI0LmNvbSIsInVzZXJfaWQiOiI2MjZhMjhhYjVlMGFjMmI2NmFiYzZmZTgiLCJpYXQiOjE2NTI0MjM0NjR9.8ZeEE0zJEr_O4u4XdHQh4gBltDGTukY7eDLzkhisbOo',
+        //   'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhbWFAMTI0LmNvbSIsInVzZXJfaWQiOiI2MjZhMjhhYjVlMGFjMmI2NmFiYzZmZTgiLCJpYXQiOjE2NTI3NTEwNDJ9.Lkwhp4nvQvkWQoZIZvpEYPho_NUTsmCw8lXYmI2sezQ',
       },
     });
 

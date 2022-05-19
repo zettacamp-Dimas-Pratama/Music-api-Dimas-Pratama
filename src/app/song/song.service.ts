@@ -8,15 +8,22 @@ export interface Page {
   limit: number;
   page: number;
 }
-export interface FilterName {
+export interface Filter {
   name: string;
+  genre: string;
+  creator_name: string;
+}
+
+export interface Sorting {
+  name: any;
+  genre: any;
+  created_by: any;
 }
 export interface Song {
   name: string;
   _id: string;
   genre: string;
   duration: any;
-  created_by: any;
 }
 @Injectable({
   providedIn: 'root',
@@ -24,12 +31,12 @@ export interface Song {
 export class SongService {
   constructor(private apollo: Apollo) {}
 
-  GetDataSong2(page: Page): Observable<any> {
+  GetDataSong2(page: Page, filter: Filter): Observable<any> {
     console.log('pages', page);
     return this.apollo.query({
       query: gql`
-        query ($page: InputSongPage) {
-          getAllSong(pagination: $page) {
+        query ($page: InputSongPage, $filter: InputSongFilter) {
+          getAllSong(pagination: $page, fillter: $filter) {
             name
             _id
             genre
@@ -46,32 +53,12 @@ export class SongService {
       `,
       variables: {
         page,
-      },
-      fetchPolicy: 'network-only',
-    });
-  }
-  FilterDataSong(filter: any): Observable<any> {
-    console.log('pages', filter);
-
-    return this.apollo.query({
-      query: gql`
-        query ($filter: InputSongFilter) {
-          getAllSong(fillter: $filter) {
-            name
-            genre
-            duration
-            created_by {
-              name
-            }
-          }
-        }
-      `,
-      variables: {
         filter,
       },
       fetchPolicy: 'network-only',
     });
   }
+
   SortDataSongName(Sort: any): Observable<any> {
     console.log('pages', Sort);
 
@@ -98,7 +85,7 @@ export class SongService {
     return this.apollo.query({
       query: gql`
         query  {
-          getAllSong(genre:{name:${Sort}}) {
+          getAllSong(sorting:{genre:${Sort}}) {
             name
             genre
             duration
@@ -118,7 +105,7 @@ export class SongService {
     return this.apollo.query({
       query: gql`
         query  {
-          getAllSong(created_by:{name:${Sort}}) {
+          getAllSong(sorting:{created_by:${Sort}}) {
             name
             genre
             duration
@@ -166,8 +153,8 @@ export class SongService {
     console.log('data payload', Payload);
     return this.apollo.mutate({
       mutation: gql`
-        mutation createSong($payload: InputSong) {
-          createSong(input_song: $payload) {
+        mutation createSong($Payload: InputSong) {
+          createSong(input_song: $Payload) {
             name
             genre
             duration
@@ -182,8 +169,8 @@ export class SongService {
   UpdateSong(id: any, Payload: any): Observable<any> {
     return this.apollo.mutate({
       mutation: gql`
-        mutation updateSong($payload: InputSong) {
-          updateSong(id: "${id}",input_song: $payload) {
+        mutation updateSong($Payload: InputSong) {
+          updateSong(id: "${id}",input_song: $Payload) {
             name
             genre
             duration

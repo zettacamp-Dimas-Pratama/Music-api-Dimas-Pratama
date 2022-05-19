@@ -11,8 +11,11 @@
       <form class="Form" [formGroup]="loginForm">
         <mat-form-field appearance="legacy">
           <mat-label style="color: white">Email</mat-label>
-          <input matInput formControlName="email" />
-          <mat-icon matSuffix>account_circle</mat-icon>
+          <input matInput formControlName="email" required />
+          <mat-icon matSuffix> account_circle</mat-icon>
+          <mat-error *ngIf="loginForm.invalid">{{
+            getErrorMessage()
+          }}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">

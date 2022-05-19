@@ -18,7 +18,7 @@ import { SongService } from '../song.service';
   templateUrl: './add-song-dialog.component.html',
   styleUrls: ['./add-song-dialog.component.scss'],
 })
-export class AddSongDialogComponent implements OnInit {
+export class AddSongDialogComponent implements OnInit, OnChanges {
   CreateForm!: FormGroup;
   DataKirim: any;
 
@@ -28,6 +28,9 @@ export class AddSongDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private songService: SongService
   ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changges', changes);
+  }
 
   ngOnInit(): void {
     this.FormGroup();

@@ -8,6 +8,7 @@
         class="button"
         (click)="DialogAdd()"
       >
+        <mat-icon>add</mat-icon>
         Add Song
       </button>
       <button
@@ -16,6 +17,7 @@
         class="button"
         (click)="Reset()"
       >
+        <mat-icon>replay</mat-icon>
         Reset Song
       </button>
       <button
@@ -49,7 +51,7 @@
       </ng-container>
       <ng-container matColumnDef="genreFilter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field floatLabel="never">
+          <mat-form-field floatLabel="never" style="margin-left: 20px">
             <input
               matInput
               (keyup)="FilterGenre($event)"
@@ -65,7 +67,7 @@
       </ng-container>
       <ng-container matColumnDef="createdFilter">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-form-field floatLabel="never">
+          <mat-form-field floatLabel="never" style="margin-left: 20px">
             <input
               matInput
               (keyup)="FilterCreatedBy($event)"
@@ -95,6 +97,7 @@
           *matHeaderCellDef
           mat-sort-header
           sortActionDescription="Sort by genre"
+          style="margin-left: 20px"
         >
           Genre
         </th>
@@ -106,7 +109,7 @@
         <th mat-header-cell *matHeaderCellDef>Duration</th>
         <td mat-cell *matCellDef="let element">{{ element.duration }}</td>
       </ng-container>
-      <ng-container matColumnDef="created">
+      <ng-container matColumnDef="created" style="padding-left: 200px">
         <th
           mat-header-cell
           *matHeaderCellDef
@@ -122,7 +125,7 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Action</th>
         <td mat-cell *matCellDef="let element">
-          <button mat-raised-button class="button" (click)="EditData(element)">
+          <!-- <button mat-raised-button class="button" (click)="EditData(element)">
             <mat-icon>border_color</mat-icon>
           </button>
           <button
@@ -137,8 +140,19 @@
             class="button"
             (click)="DetailPage(element._id)"
           >
-            <mat-icon>remove_red_eye</mat-icon>
-          </button>
+            <mat-icon class="icon">remove_red_eye</mat-icon>
+          </button> -->
+          <div style="display: flex; flex-direction: row">
+            <div class="lingkaran display" (click)="EditData(element)">
+              <mat-icon>border_color</mat-icon>
+            </div>
+            <div class="lingkaran display" (click)="DeleteSong(element._id)">
+              <mat-icon>delete</mat-icon>
+            </div>
+            <div class="lingkaran display" (click)="DetailPage(element._id)">
+              <mat-icon>remove_red_eye</mat-icon>
+            </div>
+          </div>
         </td>
       </ng-container>
 

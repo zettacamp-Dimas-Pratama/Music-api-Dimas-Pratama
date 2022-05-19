@@ -35,11 +35,17 @@ export class LoginPageComponent implements OnInit {
 
   FormGroup() {
     this.loginForm = new FormGroup({
-      email: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
     });
   }
+  getErrorMessage() {
+    if (this.loginForm.hasError('required')) {
+      return 'You must enter a value';
+    }
 
+    return this.loginForm.hasError('email') ? 'Not a valid email' : '';
+  }
   login() {
     this.spinner.show();
     console.log('data form', this.loginForm.value);
@@ -50,12 +56,12 @@ export class LoginPageComponent implements OnInit {
       .subscribe((resp) => {
         console.log('responee', resp);
         if (resp) {
-          this.router.navigate(['song']);
+          setTimeout(() => {
+            this.router.navigate(['song']);
+            this.spinner.hide();
+          }, 2000);
         }
       });
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 2000);
 
     // this.router.navigate(['song']);
   }
